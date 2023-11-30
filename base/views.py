@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+import time
 
 # Create your views here.
 
@@ -58,3 +60,14 @@ def registrationView(request):
 def home(request):
 
     return render(request, 'index.html')
+
+
+def contact(request):
+
+    if request.method == 'POST':
+
+        time.sleep(3)
+        # return 200 status code
+        return JsonResponse({'success': True})
+
+    return render(request, 'contact.html')

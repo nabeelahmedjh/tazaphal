@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>contact</title>
+</head>
+
+<body>
+
+    <form onsubmit="sendMail(event)" method="POST" id='contact_form' action="{% url 'contact' %}">
+
+        {% csrf_token %}
+
+        <label for="name">Name</label>
+        <input type="text" name="name" id="">
+
+        <label for="email">Email</label>
+        <input type="email" name="name" id="">
+
+        <label for="message">Message</label>
+        <textarea name="message" id="" cols="30" rows="10"></textarea>
+
+        <div class="loading" style="display: none;"> Working ...</div>
+
+        <input type="submit" value="Send Message">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <script>
+
+        function sendMail(e) {
+            e.preventDefault();
+            console.log('here')
+
+            let loading = document.getElementsByClassName('loading')
+            $('.loading').css('display', 'block');
+
+
+            $.ajax({
+                url: "{% url 'contact' %}",
+                type: 'POST',
+                data: {
+                    'body': $(this).serialize(),
+                    "csrfmiddlewaretoken": "{{csrf_token}}"
+
+                },
+                dataType: 'json',
+
+                success: function (response) {
+                    if (response.success) {
+                        // $('#contact-form').hide();
+                        // $('#alert').html('<div class="alert alert-success">Thank you for your message!</div>').show();
+                        $('.loading').css('display', 'none');
+                        console.log("WORKING")
+                    } else {
+                        // $('#alert').html('<div class="alert alert-danger">' + response.errors + '</div>').show();
+                        console.log("NOT WORKIGN")
+                    }
+
+                }
+
+
+
+            });
+
+
+
+
+
+        }
+
+    </script>
+</body>
+
+
+
+</html>
